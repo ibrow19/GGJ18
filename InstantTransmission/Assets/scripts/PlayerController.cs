@@ -74,6 +74,8 @@ public class PlayerController : MonoBehaviour {
 			handleAttack ();
 			break;
 		}
+
+		checkBounds ();
 	
 	}
 
@@ -110,6 +112,25 @@ public class PlayerController : MonoBehaviour {
 
 	private bool hasProgressed(float duration) {
 		return progress >= duration;
+	}
+
+	private void checkBounds() {
+
+		float width = 8f;
+		float height = 4.2f;
+
+		Vector3 pos = transform.position;
+		if (pos.x > width) {
+			transform.position = new Vector3 (width, pos.y, 0f);	
+		} else if (pos.x < -width) {
+			transform.position = new Vector3 (-width, pos.y, 0f);	
+		}
+		if (pos.y > height) {
+			transform.position = new Vector3 (pos.x, height, 0f);
+		} else if (pos.y < -height) {
+			transform.position = new Vector3 (pos.x, -height, 0f);
+		}
+
 	}
 
 	private void setTrig(string trigger) {

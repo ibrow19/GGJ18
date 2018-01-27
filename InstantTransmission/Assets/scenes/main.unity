@@ -346,7 +346,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Animations.Array.data[0]
       value: 
-      objectReference: {fileID: 7400000, guid: f6f1197e9ca5ad945a3e8aa286098761, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Animations.Array.data[1]
       value: 
@@ -354,23 +354,23 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Animations.Array.data[2]
       value: 
-      objectReference: {fileID: 7400000, guid: e44184c60fe48c14e9b1812a145084f8, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Animations.Array.data[3]
       value: 
-      objectReference: {fileID: 7400000, guid: 44be73ecf47cfbc43827eb6af3992db2, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Animations.Array.data[4]
       value: 
-      objectReference: {fileID: 7400000, guid: 8112a9fe6a42e0a4caf50f98e57e9775, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Animations.Array.data[5]
       value: 
-      objectReference: {fileID: 7400000, guid: 534435df0de07fe4bb6c9cf7d78b7555, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Animation
       value: 
-      objectReference: {fileID: 7400000, guid: f6f1197e9ca5ad945a3e8aa286098761, type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
