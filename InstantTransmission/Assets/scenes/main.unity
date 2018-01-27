@@ -96,6 +96,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4630126739049528, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
     type: 2}
   m_PrefabInternal: {fileID: 1266262615}
+--- !u!114 &541564515 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
+    type: 2}
+  m_PrefabInternal: {fileID: 1266262615}
+  m_Script: {fileID: 11500000, guid: 4336de8837a43c94da761bb41afb0072, type: 3}
 --- !u!1001 &882327176
 Prefab:
   m_ObjectHideFlags: 0
@@ -148,7 +154,7 @@ Prefab:
         type: 2}
       propertyPath: target
       value: 
-      objectReference: {fileID: 332911469}
+      objectReference: {fileID: 541564515}
     - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
         type: 2}
       propertyPath: xAxis
@@ -163,6 +169,17 @@ Prefab:
         type: 2}
       propertyPath: teleportAxis
       value: P2Teleport
+      objectReference: {fileID: 0}
+    - target: {fileID: 212340814103024760, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 07dd0340ab9567f499c304ae4d47d6fb,
+        type: 3}
+    - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
+        type: 2}
+      propertyPath: attackAxis
+      value: P2Attack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
@@ -208,46 +225,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
         type: 2}
-      propertyPath: mTarget
+      propertyPath: target
       value: 
-      objectReference: {fileID: 2021028475}
+      objectReference: {fileID: 1405008363}
     - target: {fileID: 1664661591594020, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
     - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
         type: 2}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 2021028475}
-    - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
-        type: 2}
-      propertyPath: xAxis
-      value: P1StickX
-      objectReference: {fileID: 0}
-    - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
-        type: 2}
-      propertyPath: yAxis
-      value: P1StickY
-      objectReference: {fileID: 0}
-    - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
-        type: 2}
-      propertyPath: teleportAxis
-      value: P1Teleport
-      objectReference: {fileID: 0}
-    - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
-        type: 2}
-      propertyPath: teleportButton
-      value: P1Teleport
-      objectReference: {fileID: 0}
-    - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
-        type: 2}
-      propertyPath: teleportKey
-      value: 111
+      propertyPath: attackAxis
+      value: P1Attack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1405008363 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
+    type: 2}
+  m_PrefabInternal: {fileID: 882327176}
+  m_Script: {fileID: 11500000, guid: 4336de8837a43c94da761bb41afb0072, type: 3}
 --- !u!1 &1907637920
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,8 +333,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &2021028475 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4630126739049528, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
-    type: 2}
-  m_PrefabInternal: {fileID: 882327176}
