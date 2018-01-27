@@ -29,7 +29,8 @@ public class Attack : MonoBehaviour {
 	void OnTriggerStay2D(Collider2D other) {
 
 		if (other.gameObject == target.gameObject && active) {
-			Debug.Log ("Stay");
+			Vector3 direction = target.getCentre () - transform.parent.position;
+			target.hit (new Vector2(direction.x, direction.y));
 		}
 
 	}

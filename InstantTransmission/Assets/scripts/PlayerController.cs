@@ -16,10 +16,10 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private const float blockDuration = 1f;
-	private const float PhaseDuration = 1f;
-	private const float attackStartDuration = 0.2f;
+	private const float phaseDuration = 0.2f;
+	private const float attackStartDuration = 0.05f;
 	private const float attackActiveDuration = 0.2f;
-	private const float attackRecoverDuration = 0.2f;
+	private const float attackRecoverDuration = 0.05f;
 
 	private Vector2 teleportDirection;
 
@@ -27,8 +27,8 @@ public class PlayerController : MonoBehaviour {
 	private float progress = 0f;
 
 	private const float velocity = 3f;
-	private const float teleportDistance = 1f;
-	private Vector2 offset = new Vector3 (0f, 1f, 0f);
+	private const float teleportDistance = 5f;
+	private Vector2 offset = new Vector3 (1f, 0f, 0f);
 
 	private Attack attack;
 	private Animator animator;
@@ -75,17 +75,49 @@ public class PlayerController : MonoBehaviour {
 	
 	}
 
+	public void hit (Vector2 direction) {
+
+		if (state == State.BLOCKING)
+			return;
+
+		float x = Input.GetAxis(xAxis);
+		float y = Input.GetAxis(yAxis);
+		Vector2 inputDirection = new Vector2(x, y);	
+		Debug.Log ("Attack direction: " + direction);
+		Debug.Log ("Block direction: " + inputDirection);
+		Debug.Log("Dot: " + Vector2.Dot (direction, inputDirection));
+		if (Vector2.Dot (direction, inputDirection) > 0f) {
+
+			setState (State.BLOCKING);
+			animator.SetTrigger ("block");
+
+		} else {
+
+			setState (State.DEAD);
+			animator.SetTrigger ("hit");
+
+		}
+
+	}
+
+	public bool isAlive() {
+		return state != State.DEAD;
+	}
+
+	private bool hasProgressed(float duration) {
+		return progress >= duration;
+	}
+
 	private void handleIdle() {
 
 		float x = Input.GetAxis(xAxis);
 		float y = Input.GetAxis(yAxis);
-
 		Vector2 direction = new Vector2(x, y);	
 		direction.Normalize ();
 
 		if (Input.GetAxisRaw (teleportAxis) != 0) {
+			teleportDirection = new Vector2(direction.x, direction.y);
 			setState (State.PHASING_OUT);
-			teleportDirection = direction;
 			animator.SetTrigger ("teleport");
 		} else if (Input.GetAxisRaw (attackAxis) != 0) {
 			setState (State.ATTACK_START);
@@ -100,21 +132,60 @@ public class PlayerController : MonoBehaviour {
 
 	private void handleBlocking() {
 
+		if (hasProgressed(blockDuration)) {
+			setState(State.IDLE);
+			animator.SetTrigger("finished");
+		}
+
 	}
 
 	private void handleDead() {
-
+		transform.Translate(0f, -velocity * Time.deltaTime, 0, Space.World);
 	}
 
 	private void handlePhaseOut() {
+
+		if (hasProgressed (phaseDuration)) {
+			teleport (teleportDirection);
+			setState (State.PHASING_IN);
+			animator.SetTrigger ("finished");
+		}
 
 	}
 
 	private void handlePhaseIn() {
 
+		if (hasProgressed (phaseDuration)) {
+			setState (State.IDLE);
+			animator.SetTrigger ("finished");
+		}
+
 	}
 
 	private void handleAttack() {
+
+		if (state == State.ATTACK_START) {
+
+			if (hasProgressed (attackStartDuration)) {
+				setState (State.ATTACK_ACTIVE);
+				attack.setActive (true);
+			}
+
+		} else if (state == State.ATTACK_RECOVERY) {
+
+			if (hasProgressed (attackRecoverDuration)) {
+				setState (State.IDLE);
+			}
+
+		} else {
+
+			if (hasProgressed (attackActiveDuration)) {
+				setState (State.ATTACK_RECOVERY);
+				attack.setActive (false);
+				animator.SetTrigger ("finished");
+			}
+
+		}
 
 	}
 
@@ -140,6 +211,7 @@ public class PlayerController : MonoBehaviour {
 	private void setRotation() {
 
 		Vector3 toTarget = target.getCentre() - getCentre();
+		//Vector3 toTarget = target.transform.position - transform.position;
 		toTarget.Normalize();
 
 		float rotation = Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg;
@@ -149,6 +221,8 @@ public class PlayerController : MonoBehaviour {
 		} else {
 			transform.localScale = new Vector3 (-1f, 1f, 1f);
 		}
+		transform.rotation = Quaternion.identity;
+		//transform.RotateAround (getCentre (), new Vector3 (0f, 0f, 1f), rotation);
 		transform.rotation = Quaternion.Euler(0f, 0f, rotation);
 
 	}
