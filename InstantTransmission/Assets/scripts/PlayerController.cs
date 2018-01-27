@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-	private const float VELOCITY = 1f;
+	private const float VELOCITY = 3f;
+	private const float TELEPORT_DISTANCE = 1f;
 
 	public string xAxis;
 	public string yAxis;
-
+	public string teleportAxis;
+	public string attackAxis;
 	public Transform target;
 
 	// Use this for initialization
@@ -22,14 +24,46 @@ public class PlayerController : MonoBehaviour {
 		float x = Input.GetAxis(xAxis);
 		float y = Input.GetAxis(yAxis);
 
-		Vector2 move = new Vector2(x, y);	
-		move = Vector2.ClampMagnitude (move, VELOCITY * Time.deltaTime);
-		transform.Translate(move.x, move.y, 0, Space.World);
+		Vector2 direction = new Vector2(x, y);	
+		direction.Normalize ();
+
+		if (Input.GetAxisRaw (teleportAxis) != 0) {
+			teleport (direction);
+		} else {
+			move (direction);
+		}
+
+		setRotation ();
+	
+	}
+
+	void move(Vector2 direction) {
+
+		direction *= VELOCITY * Time.deltaTime;
+		transform.Translate(direction.x, direction.y, 0, Space.World);
+
+	}
+	
+	void teleport(Vector2 direction) {
+
+		direction *= TELEPORT_DISTANCE;
+		transform.Translate(direction.x, direction.y, 0, Space.World);
+
+	}
+
+	void setRotation() {
 
 		Vector3 toTarget = target.transform.position - transform.position;
 		toTarget.Normalize();
 
 		float rotation = Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg;
+		Debug.Log(xAxis + " Rotation = " + rotation);
+		if (rotation >= 90f || rotation <= -90f) {
+			transform.localScale = new Vector3 (-1f, 1f, 1f);
+			rotation += 180f;
+		} else {
+			transform.localScale = new Vector3 (1f, 1f, 1f);
+		}
 		transform.rotation = Quaternion.Euler(0f, 0f, rotation);
 
 	}
