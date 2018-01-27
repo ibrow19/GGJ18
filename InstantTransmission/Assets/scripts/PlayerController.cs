@@ -15,20 +15,25 @@ public class PlayerController : MonoBehaviour {
 		DEAD
 	}
 
-	private const float blockDuration = 1f;
+	private const float blockDuration = 0.5f;
 	private const float phaseDuration = 0.2f;
 	private const float attackStartDuration = 0.05f;
-	private const float attackActiveDuration = 0.2f;
-	private const float attackRecoverDuration = 0.05f;
+	private const float attackActiveDuration = 0.25f;
+	private const float attackRecoverDuration = 0.01f;
 
 	private Vector2 teleportDirection;
 
 	private State state = State.IDLE;
 	private float progress = 0f;
 
-	private const float velocity = 3f;
 	private const float teleportDistance = 5f;
 	private Vector2 offset = new Vector3 (1f, 0f, 0f);
+
+	private Vector2 velocity = new Vector2(0f, 0f);
+	private const float maxSpeed = 5f;
+	private const float acceleration = 10f;
+	private const float deceleration = 2f;
+	private const float attackForce = 1000f;
 
 	private Attack attack;
 	private Animator animator;
@@ -53,10 +58,16 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 
 		progress += Time.deltaTime;
+		float x = Input.GetAxis(xAxis);
+		float y = Input.GetAxis(yAxis);
+		Vector2 direction = new Vector2(x, y);	
+		direction.Normalize ();
+
+		applyDeceleration (direction);
 
 		switch (state) {
 		case State.IDLE:
-			handleIdle ();
+			handleIdle (direction);
 			break;
 		case State.BLOCKING:
 			handleBlocking ();
@@ -75,11 +86,15 @@ public class PlayerController : MonoBehaviour {
 			break;
 		}
 
+		move ();
 		checkBounds ();
 	
 	}
 
 	public void hit (Vector2 direction) {
+		
+		direction.Normalize ();
+		applyForce (direction, attackForce);
 
 		if (state == State.DEAD || state == State.BLOCKING)
 			return;
@@ -87,9 +102,6 @@ public class PlayerController : MonoBehaviour {
 		float x = Input.GetAxis(xAxis);
 		float y = Input.GetAxis(yAxis);
 		Vector2 inputDirection = new Vector2(x, y);	
-		Debug.Log ("Attack direction: " + direction);
-		Debug.Log ("Block direction: " + inputDirection);
-		Debug.Log("Dot: " + Vector2.Dot (direction, inputDirection));
 		if (Vector2.Dot (direction, inputDirection) > 0f) {
 
 			setState (State.BLOCKING);
@@ -103,6 +115,18 @@ public class PlayerController : MonoBehaviour {
 			//animation.Play ("P1Dead");
 
 		}
+
+	}
+
+	private void applyDeceleration(Vector2 direction) {
+
+		float currentDecel = deceleration * Time.deltaTime;
+		if (currentDecel > velocity.magnitude) {
+			velocity = new Vector2 (0f, 0f);
+		} else {
+			velocity = Vector2.ClampMagnitude (velocity, velocity.magnitude - currentDecel);
+		}
+			
 
 	}
 
@@ -122,13 +146,17 @@ public class PlayerController : MonoBehaviour {
 		Vector3 pos = transform.position;
 		if (pos.x > width) {
 			transform.position = new Vector3 (width, pos.y, 0f);	
+			velocity.x = -velocity.x;
 		} else if (pos.x < -width) {
 			transform.position = new Vector3 (-width, pos.y, 0f);	
+			velocity.x = -velocity.x;
 		}
 		if (pos.y > height) {
 			transform.position = new Vector3 (pos.x, height, 0f);
+			velocity.y = -velocity.y;
 		} else if (pos.y < -height) {
 			transform.position = new Vector3 (pos.x, -height, 0f);
+			velocity.y = -velocity.y;
 		}
 
 	}
@@ -144,12 +172,8 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	private void handleIdle() {
+	private void handleIdle(Vector2 direction) {
 
-		float x = Input.GetAxis(xAxis);
-		float y = Input.GetAxis(yAxis);
-		Vector2 direction = new Vector2(x, y);	
-		direction.Normalize ();
 
 		if (Input.GetAxisRaw (teleportAxis) != 0) {
 			teleportDirection = new Vector2(direction.x, direction.y);
@@ -161,7 +185,7 @@ public class PlayerController : MonoBehaviour {
 			setTrig ("attack");
 			//animation.Play ("P1Attack");
 		} else {
-			move (direction);
+			applyForce (direction, acceleration);
 		}
 
 		setRotation ();
@@ -179,7 +203,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void handleDead() {
-		transform.Translate(0f, -velocity * Time.deltaTime, 0, Space.World);
+		applyForce (new Vector2 (0f, -1f), 4f);
 	}
 
 	private void handlePhaseOut() {
@@ -191,6 +215,7 @@ public class PlayerController : MonoBehaviour {
 			//animation.Play("P1PhaseIn");
 		}
 
+
 	}
 
 	private void handlePhaseIn() {
@@ -201,6 +226,7 @@ public class PlayerController : MonoBehaviour {
 			//animation.Play ("P1Idle");
 		}
 
+		setRotation ();
 	}
 
 	private void handleAttack() {
@@ -236,18 +262,22 @@ public class PlayerController : MonoBehaviour {
 		progress = 0f;
 	}
 
-	private void move(Vector2 direction) {
+	private void applyForce(Vector2 direction, float force) {
+		velocity += Vector2.ClampMagnitude(direction, (force * Time.deltaTime));
+		if (velocity.magnitude > maxSpeed) {
+			velocity = Vector2.ClampMagnitude (velocity, maxSpeed);
+		}
 
-		direction *= velocity * Time.deltaTime;
-		transform.Translate(direction.x, direction.y, 0, Space.World);
+			
+	}
 
+	private void move() {
+		transform.Translate(velocity.x * Time.deltaTime, velocity.y * Time.deltaTime, 0, Space.World);
 	}
 	
 	private void teleport(Vector2 direction) {
-
 		direction *= teleportDistance;
 		transform.Translate(direction.x, direction.y, 0, Space.World);
-
 	}
 
 	private void setRotation() {
