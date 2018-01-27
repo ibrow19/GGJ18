@@ -176,8 +176,7 @@ Prefab:
       propertyPath: attackAxis
       value: P2Attack
       objectReference: {fileID: 0}
-    - target: {fileID: 95343189657254916, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: b05a42d99fb9d524b9417a78c2efb107, type: 2}
@@ -188,6 +187,11 @@ Prefab:
     - target: {fileID: 1664661591594020, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 212340814103024760, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
+        type: 2}
+      propertyPath: m_SortingLayerID
+      value: -123673231
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
@@ -353,27 +357,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1664661591594020, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
-      propertyPath: m_Name
-      value: Player1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
-        type: 2}
-      propertyPath: attackAxis
-      value: P1Attack
-      objectReference: {fileID: 0}
     - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
         type: 2}
       propertyPath: target
       value: 
       objectReference: {fileID: 1405008363}
     - target: {fileID: 1664661591594020, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1562111725035274, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
-      propertyPath: m_Layer
-      value: 8
+      propertyPath: m_Name
+      value: Player1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
@@ -436,7 +427,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
+  m_SortingLayerID: 164052069
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6441bc23df773464a9d0eb511d5fc093, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour {
 	private Attack attack;
 	private Animator animator;
 
+	public int playerId;
+
 	public string xAxis;
 	public string yAxis;
 	public string teleportAxis;
@@ -77,7 +79,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void hit (Vector2 direction) {
 
-		if (state == State.BLOCKING)
+		if (state == State.DEAD || state == State.BLOCKING)
 			return;
 
 		float x = Input.GetAxis(xAxis);
@@ -89,12 +91,14 @@ public class PlayerController : MonoBehaviour {
 		if (Vector2.Dot (direction, inputDirection) > 0f) {
 
 			setState (State.BLOCKING);
-			animator.SetTrigger ("block");
+			setTrig ("block");
+			//animation.Play ("P1Blocking");
 
 		} else {
 
 			setState (State.DEAD);
-			animator.SetTrigger ("hit");
+			setTrig ("death");
+			//animation.Play ("P1Dead");
 
 		}
 
@@ -108,6 +112,17 @@ public class PlayerController : MonoBehaviour {
 		return progress >= duration;
 	}
 
+	private void setTrig(string trigger) {
+
+		animator.ResetTrigger ("attack");
+		animator.ResetTrigger ("block");
+		animator.ResetTrigger ("teleport");
+		animator.ResetTrigger ("death");
+		animator.ResetTrigger ("finish");
+		animator.SetTrigger (trigger);
+
+	}
+
 	private void handleIdle() {
 
 		float x = Input.GetAxis(xAxis);
@@ -118,10 +133,12 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetAxisRaw (teleportAxis) != 0) {
 			teleportDirection = new Vector2(direction.x, direction.y);
 			setState (State.PHASING_OUT);
-			animator.SetTrigger ("teleport");
+			setTrig ("teleport");
+			//animation.Play("P1PhaseOut");
 		} else if (Input.GetAxisRaw (attackAxis) != 0) {
 			setState (State.ATTACK_START);
-			animator.SetTrigger ("attack");
+			setTrig ("attack");
+			//animation.Play ("P1Attack");
 		} else {
 			move (direction);
 		}
@@ -134,7 +151,8 @@ public class PlayerController : MonoBehaviour {
 
 		if (hasProgressed(blockDuration)) {
 			setState(State.IDLE);
-			animator.SetTrigger("finished");
+			setTrig("finish");
+			//animation.Play ("P1Idle");
 		}
 
 	}
@@ -148,7 +166,8 @@ public class PlayerController : MonoBehaviour {
 		if (hasProgressed (phaseDuration)) {
 			teleport (teleportDirection);
 			setState (State.PHASING_IN);
-			animator.SetTrigger ("finished");
+			setTrig ("finish");
+			//animation.Play("P1PhaseIn");
 		}
 
 	}
@@ -157,7 +176,8 @@ public class PlayerController : MonoBehaviour {
 
 		if (hasProgressed (phaseDuration)) {
 			setState (State.IDLE);
-			animator.SetTrigger ("finished");
+			setTrig("finish");
+			//animation.Play ("P1Idle");
 		}
 
 	}
@@ -182,7 +202,8 @@ public class PlayerController : MonoBehaviour {
 			if (hasProgressed (attackActiveDuration)) {
 				setState (State.ATTACK_RECOVERY);
 				attack.setActive (false);
-				animator.SetTrigger ("finished");
+				setTrig("finish");
+				//animation.Play ("P1Idle");
 			}
 
 		}

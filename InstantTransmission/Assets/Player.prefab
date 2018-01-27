@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 212340814103024760}
   - component: {fileID: 61841441880072672}
   - component: {fileID: 50394383956396448}
-  - component: {fileID: 95343189657254916}
+  - component: {fileID: 111113289898979164}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -144,23 +144,32 @@ BoxCollider2D:
   m_Offset: {x: 0.15, y: -0.4}
   serializedVersion: 2
   m_Size: {x: 0.61, y: 0.59}
---- !u!95 &95343189657254916
-Animator:
-  serializedVersion: 3
+--- !u!111 &111113289898979164
+Animation:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1664661591594020}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b05a42d99fb9d524b9417a78c2efb107, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 77fa9d8b9f113b94baa01b3165fe1829, type: 2}
+  - {fileID: 7400000, guid: a39206c3556a5f34bb35966b9b8d23f8, type: 2}
+  - {fileID: 7400000, guid: 0b75c28a449b52d438cefc309eb4f4fa, type: 2}
+  - {fileID: 7400000, guid: a8bb8112f572cf14c9c2756328b91a1a, type: 2}
+  - {fileID: 7400000, guid: 1663ecef62dc29541b040408dad2c45b, type: 2}
+  - {fileID: 7400000, guid: b56bc5450f8b6c2489000815128ecff6, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &114001347704571888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -172,6 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4336de8837a43c94da761bb41afb0072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerId: 0
   xAxis: P1StickX
   yAxis: P1StickY
   teleportAxis: P1Teleport
