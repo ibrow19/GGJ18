@@ -97,7 +97,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1946983614}
   m_Script: {fileID: 11500000, guid: 4336de8837a43c94da761bb41afb0072, type: 3}
---- !u!1001 &941903811
+--- !u!1001 &314594199
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -106,11 +106,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4630126739049528, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2.89
+      value: 3.06
       objectReference: {fileID: 0}
     - target: {fileID: 4630126739049528, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.06
       objectReference: {fileID: 0}
     - target: {fileID: 4630126739049528, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
       propertyPath: m_LocalPosition.z
@@ -168,6 +168,115 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &376090089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 376090091}
+  - component: {fileID: 376090090}
+  m_Layer: 0
+  m_Name: Music
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &376090090
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 376090089}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 7baa1b941f131d948bc402e45b249d9f, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!4 &376090091
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 376090089}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.677388, y: -0.13478078, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1000014572
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,11 +306,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1398522774 stripped
+--- !u!114 &1267724618 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
     type: 2}
-  m_PrefabInternal: {fileID: 941903811}
+  m_PrefabInternal: {fileID: 314594199}
   m_Script: {fileID: 11500000, guid: 4336de8837a43c94da761bb41afb0072, type: 3}
 --- !u!1 &1907637920
 GameObject:
@@ -299,7 +408,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4630126739049528, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2.08
+      value: -3.33
       objectReference: {fileID: 0}
     - target: {fileID: 4630126739049528, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
       propertyPath: m_LocalPosition.y
@@ -329,50 +438,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
-        type: 2}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 1398522774}
     - target: {fileID: 1664661591594020, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
-    - target: {fileID: 95705426794270660, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
+    - target: {fileID: 114001347704571888, guid: cd96b9f78fdfd1941a9e5e3215ccc778,
         type: 2}
-      propertyPath: m_Controller
+      propertyPath: target
       value: 
-      objectReference: {fileID: 9100000, guid: c22cba6ea85aa3447872ac3ace99caec, type: 2}
-    - target: {fileID: 0}
-      propertyPath: m_Animations.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_Animations.Array.data[1]
-      value: 
-      objectReference: {fileID: 7400000, guid: 8ce1e24103a75264f891a99fec951739, type: 2}
-    - target: {fileID: 0}
-      propertyPath: m_Animations.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_Animations.Array.data[3]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_Animations.Array.data[4]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_Animations.Array.data[5]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_Animation
-      value: 
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 0}
+      objectReference: {fileID: 1267724618}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cd96b9f78fdfd1941a9e5e3215ccc778, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &2080452625
