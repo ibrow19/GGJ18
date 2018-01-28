@@ -16,6 +16,10 @@ public class PlayerController : MonoBehaviour {
 		DEAD
 	}
 
+	private const int maxCharges = 2;
+	private int charges = maxCharges;
+	private float rechargeProgress = 0f;
+	private float rechargeDuration = 1.5f;
 
 	public AudioClip hitSound;
 	public AudioClip blockSound;
@@ -30,7 +34,7 @@ public class PlayerController : MonoBehaviour {
 	private const float attackActiveDuration = 0.25f;
 	private const float attackRecoverDuration = 0.01f;
 
-	private const float scaleVal = 1.5f;
+	private const float scaleVal = 2f;
 
 	public float startX;
 	public float startY;
@@ -40,7 +44,7 @@ public class PlayerController : MonoBehaviour {
 	private State state = State.INACTIVE;
 	private float progress = 0f;
 
-	private const float teleportDistance = 3f;
+	private const float teleportDistance = 5f;
 	private Vector2 offset = new Vector3 (1.5f, 0f, 0f);
 
 	private Vector2 velocity = new Vector2(0f, 0f);
@@ -75,6 +79,8 @@ public class PlayerController : MonoBehaviour {
 		if (state == State.INACTIVE) {
 			setRotation ();
 			return;
+		} else if (state != State.DEAD) {
+			handleCharging ();
 		}
 
 		progress += Time.deltaTime;
@@ -111,6 +117,26 @@ public class PlayerController : MonoBehaviour {
 	
 	}
 
+	public int getCharges() {
+		return charges;
+	}
+
+	private void handleCharging() {
+
+		if (charges != maxCharges) {
+
+			rechargeProgress += Time.deltaTime;
+			if (rechargeProgress >= rechargeDuration) {
+				rechargeProgress -= rechargeDuration;
+				++charges;
+			}
+
+		} else {
+			rechargeProgress = 0f;
+		}
+
+	}
+
 	public void activate() {
 		state = State.IDLE;
 	}
@@ -121,6 +147,8 @@ public class PlayerController : MonoBehaviour {
 		attack.setActive (false);
 		velocity = new Vector2 (0f, 0f);
 		transform.position = new Vector3 (startX, startY, 0f);
+		charges = maxCharges;
+		rechargeProgress = 0f;
 	}
 
 	public void hit (Vector2 direction) {
@@ -197,6 +225,7 @@ public class PlayerController : MonoBehaviour {
 
 	private void setTrig(string trigger) {
 
+		attack.setActive (false);
 		animator.ResetTrigger ("attack");
 		animator.ResetTrigger ("block");
 		animator.ResetTrigger ("teleport");
@@ -209,8 +238,9 @@ public class PlayerController : MonoBehaviour {
 	private void handleIdle(Vector2 direction) {
 
 
-		if (Input.GetAxisRaw (teleportAxis) != 0) {
+		if (Input.GetAxisRaw (teleportAxis) != 0 && charges > 0) {
 			teleportDirection = new Vector2(direction.x, direction.y);
+			--charges;
 			setState (State.PHASING_OUT);
 			setTrig ("teleport");
 			audioSource.PlayOneShot (teleportSound, 1f);
@@ -218,7 +248,7 @@ public class PlayerController : MonoBehaviour {
 		} else if (Input.GetAxisRaw (attackAxis) != 0) {
 			setState (State.ATTACK_START);
 			setTrig ("attack");
-			audioSource.PlayOneShot (attackSound);
+			audioSource.PlayOneShot (attackSound, 1f);
 			//animation.Play ("P1Attack");
 		} else {
 			applyForce (direction, acceleration);
