@@ -7,6 +7,7 @@ public class Attack : MonoBehaviour {
 	private bool active = false;
 
 	private PlayerController target;
+	public PlayerController p;
 
 	// Use this for initialization
 	void Start () {
@@ -28,8 +29,8 @@ public class Attack : MonoBehaviour {
 
 	void OnTriggerStay2D(Collider2D other) {
 
-		if (other.gameObject == target.gameObject && active) {
-			Vector3 direction = target.getCentre () - transform.parent.position;
+		if (other.gameObject == target.t.gameObject && active) {
+			Vector3 direction = target.t.transform.position - p.t.transform.position;
 			target.hit (new Vector2(direction.x, direction.y));
 		}
 

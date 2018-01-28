@@ -16,6 +16,10 @@ public class PlayerController : MonoBehaviour {
 		DEAD
 	}
 
+	public Transform t;
+
+	private float angle = 0f;
+
 	private const int maxCharges = 2;
 	private int charges = maxCharges;
 	private float rechargeProgress = 0f;
@@ -45,7 +49,7 @@ public class PlayerController : MonoBehaviour {
 	private float progress = 0f;
 
 	private const float teleportDistance = 5f;
-	private Vector2 offset = new Vector3 (1.5f, 0f, 0f);
+	private Vector2 offset = new Vector3 (1f, -0.6f, 0f);
 
 	private Vector2 velocity = new Vector2(0f, 0f);
 	private const float maxSpeed = 5f;
@@ -146,7 +150,7 @@ public class PlayerController : MonoBehaviour {
 		setTrig ("finish");
 		attack.setActive (false);
 		velocity = new Vector2 (0f, 0f);
-		transform.position = new Vector3 (startX, startY, 0f);
+		t.transform.position = new Vector3 (startX, startY, 0f);
 		charges = maxCharges;
 		rechargeProgress = 0f;
 	}
@@ -205,19 +209,20 @@ public class PlayerController : MonoBehaviour {
 		float width = 8f;
 		float height = 4.2f;
 
-		Vector3 pos = transform.position;
+		Vector3 pos = t.transform.position;
+		//Vector3 pos = getCentre();
 		if (pos.x > width) {
-			transform.position = new Vector3 (width, pos.y, 0f);	
+			t.transform.position = new Vector3 (width, pos.y, 0f);	
 			velocity.x = -velocity.x;
 		} else if (pos.x < -width) {
-			transform.position = new Vector3 (-width, pos.y, 0f);	
+			t.transform.position = new Vector3 (-width, pos.y, 0f);	
 			velocity.x = -velocity.x;
 		}
 		if (pos.y > height) {
-			transform.position = new Vector3 (pos.x, height, 0f);
+			t.transform.position = new Vector3 (pos.x, height, 0f);
 			velocity.y = -velocity.y;
 		} else if (pos.y < -height) {
-			transform.position = new Vector3 (pos.x, -height, 0f);
+			t.transform.position = new Vector3 (pos.x, -height, 0f);
 			velocity.y = -velocity.y;
 		}
 
@@ -349,12 +354,12 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void move() {
-		transform.Translate(velocity.x * Time.deltaTime, velocity.y * Time.deltaTime, 0, Space.World);
+		t.transform.Translate(velocity.x * Time.deltaTime, velocity.y * Time.deltaTime, 0, Space.World);
 	}
 	
 	private void teleport(Vector2 direction) {
 		direction *= teleportDistance;
-		transform.Translate(direction.x, direction.y, 0, Space.World);
+		t.transform.Translate(direction.x, direction.y, 0, Space.World);
 	}
 
 	private void setRotation() {
@@ -365,22 +370,47 @@ public class PlayerController : MonoBehaviour {
 
 		float rotation = Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg;
 		if (rotation >= 90f || rotation <= -90f) {
-			transform.localScale = new Vector3 (scaleVal, scaleVal, 1f);
+			t.transform.localScale = new Vector3 (scaleVal, scaleVal, 1f);
 			rotation += 180f;
 		} else {
-			transform.localScale = new Vector3 (-scaleVal, scaleVal, 1f);
+			t.transform.localScale = new Vector3 (-scaleVal, scaleVal, 1f);
 		}
-		transform.rotation = Quaternion.identity;
-		//transform.RotateAround (getCentre (), new Vector3 (0f, 0f, 1f), rotation);
-		transform.rotation = Quaternion.Euler(0f, 0f, rotation);
+
+		//float tmp = rotation;
+		//rotation = rotation - angle;
+		//angle = rotation;
+
+		//Vector3 toOrigin = getToOrigin ();
+		Vector3 centre = getCentre ();
+		//transform.rotation = Quaternion.Euler(0f, 0f, rotation) * (transform.position - centre) + centre;
+		//Vector3 centre = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
+		//Vector3 scaledOffset = Vector3.Scale (offset, transform.localScale);
+		//transform.Translate(toOrigin.x, toOrigin.y, 0);
+		t.transform.rotation = Quaternion.identity;
+		//transform.RotateAround (/*getCentre ()new Vector3(0f, 0f, 0f)*/getCentre(), new Vector3 (0f, 0f, 1f), rotation);
+		t.transform.rotation = Quaternion.Euler(0f, 0f, rotation);
+		//transform.Translate(centre - getCentre(), Space.World);
+		//Matrix4x4 m = Matrix4x4.Rotate (rot);
+
+
+		//toOrigin = getToOrigin ();
+		//transform.Translate(-toOrigin.x, -toOrigin.y, 0);
 
 	}
 
 	public Vector3 getCentre() {
 
-		Vector3 toOrigin = Vector3.Scale (offset, transform.localScale);
-		toOrigin = transform.rotation * toOrigin;
-		return transform.position + toOrigin;
+		Vector3 toOrigin = getToOrigin();
+		//return transform.position + toOrigin;
+		return t.transform.position;
+
+	}
+
+	public Vector3 getToOrigin() {
+		
+		Vector3 toOrigin = Vector3.Scale (offset, t.transform.localScale);
+		toOrigin = t.transform.rotation * toOrigin;
+		return toOrigin;
 
 	}
 }
