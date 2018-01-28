@@ -16,11 +16,21 @@ public class PlayerController : MonoBehaviour {
 		DEAD
 	}
 
+
+	public AudioClip hitSound;
+	public AudioClip blockSound;
+	public AudioClip attackSound;
+	public AudioClip deathSound;
+	public AudioClip teleportSound;
+	private AudioSource audioSource;
+
 	private const float blockDuration = 0.5f;
 	private const float phaseDuration = 0.2f;
 	private const float attackStartDuration = 0.05f;
 	private const float attackActiveDuration = 0.25f;
 	private const float attackRecoverDuration = 0.01f;
+
+	private const float scaleVal = 1.5f;
 
 	public float startX;
 	public float startY;
@@ -30,8 +40,8 @@ public class PlayerController : MonoBehaviour {
 	private State state = State.INACTIVE;
 	private float progress = 0f;
 
-	private const float teleportDistance = 5f;
-	private Vector2 offset = new Vector3 (5f, 0f, 0f);
+	private const float teleportDistance = 3f;
+	private Vector2 offset = new Vector3 (1.5f, 0f, 0f);
 
 	private Vector2 velocity = new Vector2(0f, 0f);
 	private const float maxSpeed = 5f;
@@ -54,6 +64,7 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		animator = GetComponent<Animator>();
+		audioSource = GetComponent<AudioSource> ();
 		attack = transform.Find ("Attack").GetComponent<Attack> ();
 		attack.setTarget (target);
 	}
@@ -105,8 +116,10 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void reset() {
-		state = State.INACTIVE;
+		setState (State.INACTIVE);
 		setTrig ("finish");
+		attack.setActive (false);
+		velocity = new Vector2 (0f, 0f);
 		transform.position = new Vector3 (startX, startY, 0f);
 	}
 
@@ -125,12 +138,14 @@ public class PlayerController : MonoBehaviour {
 
 			setState (State.BLOCKING);
 			setTrig ("block");
+			audioSource.PlayOneShot (blockSound, 1f);
 			//animation.Play ("P1Blocking");
 
 		} else {
 
 			setState (State.DEAD);
 			setTrig ("death");
+			audioSource.PlayOneShot (deathSound, 1f);
 			//animation.Play ("P1Dead");
 
 		}
@@ -198,10 +213,12 @@ public class PlayerController : MonoBehaviour {
 			teleportDirection = new Vector2(direction.x, direction.y);
 			setState (State.PHASING_OUT);
 			setTrig ("teleport");
+			audioSource.PlayOneShot (teleportSound, 1f);
 			//animation.Play("P1PhaseOut");
 		} else if (Input.GetAxisRaw (attackAxis) != 0) {
 			setState (State.ATTACK_START);
 			setTrig ("attack");
+			audioSource.PlayOneShot (attackSound);
 			//animation.Play ("P1Attack");
 		} else {
 			applyForce (direction, acceleration);
@@ -307,10 +324,10 @@ public class PlayerController : MonoBehaviour {
 
 		float rotation = Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg;
 		if (rotation >= 90f || rotation <= -90f) {
-			transform.localScale = new Vector3 (1f, 1f, 1f);
+			transform.localScale = new Vector3 (scaleVal, scaleVal, 1f);
 			rotation += 180f;
 		} else {
-			transform.localScale = new Vector3 (-1f, 1f, 1f);
+			transform.localScale = new Vector3 (-scaleVal, scaleVal, 1f);
 		}
 		transform.rotation = Quaternion.identity;
 		//transform.RotateAround (getCentre (), new Vector3 (0f, 0f, 1f), rotation);
