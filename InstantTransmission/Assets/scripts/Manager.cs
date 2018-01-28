@@ -8,17 +8,26 @@ public class Manager : MonoBehaviour {
 		SETUP,
 		FIGHT,
 		IN_GAME,
+		ANNOUNCE,
 		WINNER,
 		REMATCH,
 	}
 
-	private Sprite fightSprite;
-	private Sprite p1Sprite;
-	private Sprite p2Sprite;
-	private Sprite rematchSprite;
+	public Sprite fightSprite;
+	public Sprite p1Sprite;
+	public Sprite p2Sprite;
+	public Sprite rematchSprite;
 
-	private const float stateTime = 2f;
+	public AudioClip fightSound;
+	public AudioClip p1Sound;
+	public AudioClip p2Sound;
+	public AudioClip winsSound;
 
+	private const float longTime = 2f;
+	private const float shortTime = 1f;
+	private const float midTime = 1.5f;
+
+	private AudioSource audioSource;
 	private SpriteRenderer srenderer;
 
 	private float progress = 0f;
@@ -30,11 +39,12 @@ public class Manager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		fightSprite = Resources.Load <Sprite> ("fight"); 
-		p1Sprite = Resources.Load <Sprite> ("player1wins"); 
-		p2Sprite = Resources.Load <Sprite> ("player2wins"); 
-		rematchSprite = Resources.Load <Sprite> ("rematch"); 
+		//fightSprite = Resources.Load <Sprite> ("fight"); 
+		//p1Sprite = Resources.Load <Sprite> ("player1wins"); 
+		//p2Sprite = Resources.Load <Sprite> ("player2wins"); 
+		//rematchSprite = Resources.Load <Sprite> ("rematch"); 
 		srenderer = GetComponent<SpriteRenderer> ();
+		audioSource = GetComponent<AudioSource> ();
 		srenderer.enabled = false;
 
 	}
@@ -54,50 +64,62 @@ public class Manager : MonoBehaviour {
 			case State.IN_GAME:
 				handleInGame ();
 				break;
-			case State.WINNER:
-				handleWinner ();
+			case State.REMATCH:
+				handleRematch ();
 				break;
 			default:
-				handleRematch ();
+				handleWinner ();
 				break;
 			}
 
 	}
 
 	private void handleSetup() {
-		if (progress > stateTime) {
+		if (progress > longTime) {
 			setState (State.FIGHT);
+			audioSource.PlayOneShot(fightSound, 1f);
 			srenderer.enabled = true;
 			srenderer.sprite = fightSprite;
 		}
 	}
 
 	private void handleFight() {
-		if (progress > stateTime) {
+		if (progress > shortTime) {
 			setState (State.IN_GAME);
 			srenderer.enabled = false;
+			p1.activate ();
+			p2.activate ();
 		}
 	}
 
 	private void handleInGame() {
-		if (gameOver () && progress > stateTime) {
-			setState (State.WINNER);
-			srenderer.enabled = true;
+		if (gameOver()) {
+			setState (State.ANNOUNCE);
 			if (p1.isAlive ()) {
-				srenderer.sprite = p1Sprite;
+				audioSource.PlayOneShot (p1Sound, 1f);
 			} else {
-				srenderer.sprite = p2Sprite;
+				audioSource.PlayOneShot (p2Sound, 1f);
 			}
-		} else if (!gameOver()) {
-			progress = 0f;
-		}
+		} 
 	}
 
 	private void handleWinner() {
-		if (progress > stateTime) {
-			setState (State.REMATCH);
-			srenderer.sprite = rematchSprite;
-		}
+		if (progress > midTime) {
+			if (state == State.ANNOUNCE) {
+				setState (State.WINNER);
+				srenderer.enabled = true;
+				if (p1.isAlive ()) {
+					srenderer.sprite = p1Sprite;
+				} else {
+					srenderer.sprite = p2Sprite;
+				}
+				audioSource.PlayOneShot (winsSound, 1f);
+			} else {
+				setState (State.REMATCH);
+				srenderer.sprite = rematchSprite;
+			}
+		} 
+
 	}
 
 	private void handleRematch() {
@@ -106,6 +128,8 @@ public class Manager : MonoBehaviour {
 		    Input.GetAxisRaw ("P1Teleport") != 0 || Input.GetAxisRaw ("P2Teleport") != 0) {
 			setState (State.SETUP);
 			srenderer.enabled = false;
+			p1.reset();
+			p2.reset();
 		}
 
 	}

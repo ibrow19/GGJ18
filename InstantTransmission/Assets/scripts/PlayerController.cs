@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
 	enum State {
+		INACTIVE,
 		IDLE,
 		ATTACK_START,
 		ATTACK_ACTIVE,
@@ -21,13 +22,16 @@ public class PlayerController : MonoBehaviour {
 	private const float attackActiveDuration = 0.25f;
 	private const float attackRecoverDuration = 0.01f;
 
+	public float startX;
+	public float startY;
+
 	private Vector2 teleportDirection;
 
-	private State state = State.IDLE;
+	private State state = State.INACTIVE;
 	private float progress = 0f;
 
 	private const float teleportDistance = 5f;
-	private Vector2 offset = new Vector3 (1f, 0f, 0f);
+	private Vector2 offset = new Vector3 (5f, 0f, 0f);
 
 	private Vector2 velocity = new Vector2(0f, 0f);
 	private const float maxSpeed = 5f;
@@ -56,6 +60,11 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (state == State.INACTIVE) {
+			setRotation ();
+			return;
+		}
 
 		progress += Time.deltaTime;
 		float x = Input.GetAxis(xAxis);
@@ -89,6 +98,16 @@ public class PlayerController : MonoBehaviour {
 		move ();
 		checkBounds ();
 	
+	}
+
+	public void activate() {
+		state = State.IDLE;
+	}
+
+	public void reset() {
+		state = State.INACTIVE;
+		setTrig ("finish");
+		transform.position = new Vector3 (startX, startY, 0f);
 	}
 
 	public void hit (Vector2 direction) {
