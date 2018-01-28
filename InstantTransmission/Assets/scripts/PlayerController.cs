@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour {
 			handleDead ();
 			break;
 		case State.PHASING_IN:
-			handlePhaseIn ();
+			handlePhaseIn (direction);
 			break;
 		case State.PHASING_OUT:
 			handlePhaseOut ();
@@ -284,13 +284,24 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	private void handlePhaseIn() {
+	private void handlePhaseIn(Vector2 direction) {
 
-		if (hasProgressed (phaseDuration)) {
+		if (Input.GetAxisRaw (teleportAxis) != 0 && charges > 0) {
+			teleportDirection = new Vector2 (direction.x, direction.y);
+			--charges;
+			setState (State.PHASING_OUT);
+			setTrig ("teleport");
+			audioSource.PlayOneShot (teleportSound, 1f);
+			//animation.Play("P1PhaseOut");
+		} else if (Input.GetAxisRaw (attackAxis) != 0) {
+			setState (State.ATTACK_START);
+			setTrig ("attack");
+			audioSource.PlayOneShot (attackSound, 1f);
+		} else if (hasProgressed (phaseDuration)) {
 			setState (State.IDLE);
 			setTrig("finish");
 			//animation.Play ("P1Idle");
-		}
+		} 
 
 		setRotation ();
 	}
