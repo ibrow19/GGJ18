@@ -171,14 +171,12 @@ public class PlayerController : MonoBehaviour {
 			setState (State.BLOCKING);
 			setTrig ("block");
 			audioSource.PlayOneShot (blockSound, 1f);
-			//animation.Play ("P1Blocking");
 
 		} else {
 
 			setState (State.DEAD);
 			setTrig ("death");
 			audioSource.PlayOneShot (deathSound, 1f);
-			//animation.Play ("P1Dead");
 
 		}
 
@@ -210,7 +208,6 @@ public class PlayerController : MonoBehaviour {
 		float height = 4.2f;
 
 		Vector3 pos = t.transform.position;
-		//Vector3 pos = getCentre();
 		if (pos.x > width) {
 			t.transform.position = new Vector3 (width, pos.y, 0f);	
 			velocity.x = -velocity.x;
@@ -249,12 +246,10 @@ public class PlayerController : MonoBehaviour {
 			setState (State.PHASING_OUT);
 			setTrig ("teleport");
 			audioSource.PlayOneShot (teleportSound, 1f);
-			//animation.Play("P1PhaseOut");
 		} else if (Input.GetAxisRaw (attackAxis) != 0) {
 			setState (State.ATTACK_START);
 			setTrig ("attack");
 			audioSource.PlayOneShot (attackSound, 1f);
-			//animation.Play ("P1Attack");
 		} else {
 			applyForce (direction, acceleration);
 		}
@@ -268,7 +263,6 @@ public class PlayerController : MonoBehaviour {
 		if (hasProgressed(blockDuration)) {
 			setState(State.IDLE);
 			setTrig("finish");
-			//animation.Play ("P1Idle");
 		}
 
 	}
@@ -283,7 +277,6 @@ public class PlayerController : MonoBehaviour {
 			teleport (teleportDirection);
 			setState (State.PHASING_IN);
 			setTrig ("finish");
-			//animation.Play("P1PhaseIn");
 		}
 
 
@@ -297,7 +290,6 @@ public class PlayerController : MonoBehaviour {
 			setState (State.PHASING_OUT);
 			setTrig ("teleport");
 			audioSource.PlayOneShot (teleportSound, 1f);
-			//animation.Play("P1PhaseOut");
 		} else if (Input.GetAxisRaw (attackAxis) != 0) {
 			setState (State.ATTACK_START);
 			setTrig ("attack");
@@ -305,7 +297,6 @@ public class PlayerController : MonoBehaviour {
 		} else if (hasProgressed (phaseDuration)) {
 			setState (State.IDLE);
 			setTrig("finish");
-			//animation.Play ("P1Idle");
 		} 
 
 		setRotation ();
@@ -332,7 +323,6 @@ public class PlayerController : MonoBehaviour {
 				setState (State.ATTACK_RECOVERY);
 				attack.setActive (false);
 				setTrig("finish");
-				//animation.Play ("P1Idle");
 			}
 
 		}
@@ -365,7 +355,6 @@ public class PlayerController : MonoBehaviour {
 	private void setRotation() {
 
 		Vector3 toTarget = target.getCentre() - getCentre();
-		//Vector3 toTarget = target.transform.position - transform.position;
 		toTarget.Normalize();
 
 		float rotation = Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg;
@@ -376,32 +365,15 @@ public class PlayerController : MonoBehaviour {
 			t.transform.localScale = new Vector3 (-scaleVal, scaleVal, 1f);
 		}
 
-		//float tmp = rotation;
-		//rotation = rotation - angle;
-		//angle = rotation;
-
-		//Vector3 toOrigin = getToOrigin ();
 		Vector3 centre = getCentre ();
-		//transform.rotation = Quaternion.Euler(0f, 0f, rotation) * (transform.position - centre) + centre;
-		//Vector3 centre = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
-		//Vector3 scaledOffset = Vector3.Scale (offset, transform.localScale);
-		//transform.Translate(toOrigin.x, toOrigin.y, 0);
 		t.transform.rotation = Quaternion.identity;
-		//transform.RotateAround (/*getCentre ()new Vector3(0f, 0f, 0f)*/getCentre(), new Vector3 (0f, 0f, 1f), rotation);
 		t.transform.rotation = Quaternion.Euler(0f, 0f, rotation);
-		//transform.Translate(centre - getCentre(), Space.World);
-		//Matrix4x4 m = Matrix4x4.Rotate (rot);
-
-
-		//toOrigin = getToOrigin ();
-		//transform.Translate(-toOrigin.x, -toOrigin.y, 0);
 
 	}
 
 	public Vector3 getCentre() {
 
 		Vector3 toOrigin = getToOrigin();
-		//return transform.position + toOrigin;
 		return t.transform.position;
 
 	}
